@@ -98,6 +98,16 @@ class App < Roda
 
           TokensSerializer.new(tokens: tokens).render
         end
+
+        r.on('items') do
+          current_user
+
+          r.post do
+            item_params = Items::ItemParams.new.permit!(r.params)
+            item_id     = Items::Creator.new(user: current_user, attributes: item_params).call
+            { id: item_id }.to_json
+          end
+        end
       end
     end
   end

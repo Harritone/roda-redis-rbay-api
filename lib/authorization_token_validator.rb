@@ -23,6 +23,6 @@ class AuthorizationTokenValidator
   end
 
   def current_user
-    @current_user ||= (redis_hgetall(users_key(data[:user_id])) || {}).symbolize_keys
+    @current_user ||= redis_hgetall(users_key(data[:user_id]))&.symbolize_keys
   end
 end

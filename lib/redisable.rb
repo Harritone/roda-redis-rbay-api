@@ -54,6 +54,22 @@ module Redisable
       "users##{id}"
     end
 
+    def items_key(id)
+      "items##{id}"
+    end
+
+    def items_by_views_key
+      'items:views'
+    end
+
+    def items_by_ending_at_key
+      'items:ending_at'
+    end
+
+    def items_by_price_key
+      'items:price'
+    end
+
     def tokens_key(_token)
       'tokens'
     end
