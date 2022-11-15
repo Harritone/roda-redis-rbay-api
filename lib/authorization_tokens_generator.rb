@@ -9,8 +9,8 @@ class AuthorizationTokensGenerator
 
   def call
     {
-      access_token: { token: access_token, expires_in: 300 },
-      refresh_token: { token: refresh_token, expires_in: 900 }
+      access_token: { token: access_token, expires_in: ENV.fetch('ACCESS_TOKEN_EXPIRES_IN', 300).to_i },
+      refresh_token: { token: refresh_token, expires_in: ENV.fetch('REFRESH_TOKEN_EXPIRES_IN', 900).to_i }
     }
   end
 

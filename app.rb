@@ -26,21 +26,36 @@ class App < Roda
 
   plugin :all_verbs
 
+  def current_user
+    return @current_user if @current_user
+
+    purpose = request.url.include?('refresh_token') ? :refresh_token : :access_token
+
+    @current_user = AuthorizationTokenValidator.new(
+      authorization_token: env['HTTP_AUTHORIZATION'],
+      purpose: purpose
+    ).call
+  end
+
   # Adds ability to automatically handle errors raised by the application.
   plugin :error_handler do |e|
     if e.instance_of?(Exceptions::InvalidParamsError)
-      error_object = e.object
+      error_object    = e.object
       response.status = 422
     elsif e.instance_of?(Exceptions::UserExists)
-      error_object = { error: I18n.t('user_exists') }
+      error_object    = { error: I18n.t('user_exists') }
       response.status = 422
     elsif e.instance_of?(Exceptions::UserNotFound)
-      error_object = { error: I18n.t('user_not_found') }
+      error_object    = { error: I18n.t('user_not_found') }
       response.status = 404
     elsif e.instance_of?(Exceptions::PasswordMismatch)
-      error_object = { error: I18n.t('password_mismatch') }
-      response.status = 404
+      error_object    = { error: I18n.t('password_mismatch') }
+      response.status = 401
+    elsif e.instance_of?(ActiveSupport::MessageVerifier::InvalidSignature)
+      error_object    = { error: I18n.t('invalid_authorization_token') }
+      response.status = 401
     else
+      binding.pry
       error_object = { error: I18n.t('something_went_wrong') }
       response.status = 500
     end
@@ -68,6 +83,12 @@ class App < Roda
           tokens       = AuthorizationTokensGenerator.new(user: user).call
 
           UserSerializer.new(user: user, tokens: tokens).render
+        end
+
+        r.delete('logout') do
+          Users::UpdateAuthenticationToken.new(user: current_user).call
+
+          response.write(nil)
         end
       end
     end

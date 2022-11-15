@@ -9,6 +9,6 @@ class RefreshTokenGenerator
   def call
     data = { user_id: @user[:id], authentication_token: @user[:authentication_token] }
 
-    MessageVerifier.encode(data: data, expires_at: Time.now + 900, purpose: :refresh_token)
+    MessageVerifier.encode(data: data, expires_at: Time.now + ENV.fetch('REFRESH_TOKEN_EXPIRES_IN', 900).to_i, purpose: :refresh_token)
   end
 end

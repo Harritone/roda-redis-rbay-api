@@ -31,6 +31,10 @@ module Redisable
       redis_pool.with { |conn| conn.hgetall(key) }
     end
 
+    def redis_srem(key, value)
+      redis_pool.with { |conn| conn.srem(key, value) }
+    end
+
     def redis_multi(&block)
       redis_pool.with do |conn|
         conn.multi(&block)
