@@ -6,6 +6,7 @@ Application.boot(:redis) do |container|
 
   init do
     require 'redis'
+    require 'connection_pool'
   end
 
   start do

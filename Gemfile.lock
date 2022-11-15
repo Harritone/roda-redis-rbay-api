@@ -73,7 +73,6 @@ GEM
       ast (~> 2.4.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
-    pg (1.2.3)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -125,32 +124,19 @@ GEM
       rubocop (~> 1.0)
     rubocop-rspec (2.7.0)
       rubocop (~> 1.19)
-    rubocop-sequel (0.3.3)
-      rubocop (~> 1.0)
     rubocop-thread_safety (0.4.4)
       rubocop (>= 0.53.0)
     ruby-progressbar (1.11.0)
     sequel (5.51.0)
-    sequel_pg (1.14.0)
-      pg (>= 0.18.0, != 1.2.0)
-      sequel (>= 4.38.0)
     sequel_secure_password (0.2.15)
       bcrypt (>= 3.1, < 4.0)
       sequel (>= 4.1.0, < 6.0)
-    sidekiq (6.3.1)
-      connection_pool (>= 2.2.2)
-      rack (~> 2.0)
-      redis (>= 4.2.0)
-    timecop (0.9.4)
     tty-color (0.6.0)
     tty-logger (0.6.0)
       pastel (~> 0.8)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    webrick (1.7.0)
-    yard (0.9.27)
-      webrick (~> 1.7.0)
     zeitwerk (2.5.3)
 
 PLATFORMS
@@ -179,14 +165,8 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rake
   rubocop-rspec
-  rubocop-sequel
   rubocop-thread_safety
-  sequel (>= 5.41)
-  sequel_pg (>= 1.14)
   sequel_secure_password
-  sidekiq
-  timecop
-  yard
   zeitwerk
 
 RUBY VERSION
