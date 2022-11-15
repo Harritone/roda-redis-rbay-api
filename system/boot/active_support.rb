@@ -6,6 +6,7 @@ Application.boot(:active_support) do
   init do
     require 'active_support/message_verifier'
     require 'active_support/json'
+    require 'active_support/core_ext/hash/keys'
   end
 
   start do

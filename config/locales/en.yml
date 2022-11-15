@@ -5,3 +5,5 @@ en:
   invalid_email_or_password: Invalid email or password.
   invalid_authorization_token: Invalid authorization token.
   not_found: Record not found.
+  user_not_found: User does not exist
+  password_mismatch: Invalid password.

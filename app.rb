@@ -34,6 +34,12 @@ class App < Roda
     elsif e.instance_of?(Exceptions::UserExists)
       error_object = { error: I18n.t('user_exists') }
       response.status = 422
+    elsif e.instance_of?(Exceptions::UserNotFound)
+      error_object = { error: I18n.t('user_not_found') }
+      response.status = 404
+    elsif e.instance_of?(Exceptions::PasswordMismatch)
+      error_object = { error: I18n.t('password_mismatch') }
+      response.status = 404
     else
       error_object = { error: I18n.t('something_went_wrong') }
       response.status = 500
@@ -51,7 +57,15 @@ class App < Roda
         r.post('sign_up') do
           sign_up_params = SignUpParams.new.permit!(r.params)
           user           = Users::Creator.new(attributes: sign_up_params).call
-          tokens = AuthorizationTokensGenerator.new(user: user).call
+          tokens         = AuthorizationTokensGenerator.new(user: user).call
+
+          UserSerializer.new(user: user, tokens: tokens).render
+        end
+
+        r.post('login') do
+          login_params = LoginParams.new.permit!(r.params)
+          user         = Users::Authenticator.new(login_params).call
+          tokens       = AuthorizationTokensGenerator.new(user: user).call
 
           UserSerializer.new(user: user, tokens: tokens).render
         end

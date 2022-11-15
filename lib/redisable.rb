@@ -23,6 +23,14 @@ module Redisable
       redis_pool.with { |conn| conn.sismember(key, value) }
     end
 
+    def redis_zscore(key, value)
+      redis_pool.with { |conn| conn.zscore(key, value) }
+    end
+
+    def redis_hgetall(key)
+      redis_pool.with { |conn| conn.hgetall(key) }
+    end
+
     def redis_multi(&block)
       redis_pool.with do |conn|
         conn.multi(&block)
