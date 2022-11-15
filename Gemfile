@@ -57,6 +57,7 @@ gem 'rack-attack'
 # Redis is an in-memory database that persists on disk.
 gem 'redis'
 
+# Handle connection
 gem 'connection_pool'
 
 # Simple, efficient background processing for Ruby.

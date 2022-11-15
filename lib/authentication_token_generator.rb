@@ -4,13 +4,10 @@
 module AuthenticationTokenGenerator
   include Redisable
 
-  class << self
-    def call
-      loop do
-        random_token = SecureRandom.hex(20)
-        break random_token unless redis_sismember(uniq_auth_tokens_key, random_token)
-      end
+  def self.call
+    loop do
+      random_token = SecureRandom.hex(20)
+      break random_token unless redis_sismember(uniq_auth_tokens_key, random_token)
     end
   end
-
 end

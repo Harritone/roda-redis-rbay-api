@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationParams < Dry::Validation::Contract
   def permit!(params)
     params = self.class.new.call(params)

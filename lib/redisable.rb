@@ -2,13 +2,13 @@
 
 module Redisable
   def self.included(klass)
-    klass.include InstanceMethods
-    klass.extend ClassMethods
+    klass.include(InstanceMethods)
+    klass.extend(ClassMethods)
   end
 
   module CommonMethods
     def redis_hset(key, options)
-      redis_pool.with { |conn| conn.hset(key, options)  }
+      redis_pool.with { |conn| conn.hset(key, options) }
     end
 
     def redis_sadd(key, value)
@@ -23,11 +23,9 @@ module Redisable
       redis_pool.with { |conn| conn.sismember(key, value) }
     end
 
-    def redis_multi(&block)
+    def redis_multi
       redis_pool.with do |conn|
-        conn.multi do |pipeline|
-          block.call(pipeline)
-        end
+        conn.multi(&block)
       end
     end
 
@@ -44,8 +42,8 @@ module Redisable
       "users##{id}"
     end
 
-    def tokens_key(token)
-      "tokens"
+    def tokens_key(_token)
+      'tokens'
     end
 
     def usernames_key
@@ -57,7 +55,7 @@ module Redisable
     include CommonMethods
 
     def redis_pool
-      ConnectionPool.new(size: 20) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) }
+      ConnectionPool.new(size: 5) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) }
     end
   end
 
@@ -65,7 +63,7 @@ module Redisable
     include CommonMethods
 
     def redis_pool
-      ConnectionPool.new(size: 20) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) }
+      ConnectionPool.new(size: 5) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) }
     end
   end
 end

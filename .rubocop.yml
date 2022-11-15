@@ -2,7 +2,6 @@ require:
   - rubocop-rspec
   - rubocop-performance
   - rubocop-thread_safety
-  - rubocop-sequel
   - rubocop-rake
 
 AllCops:
@@ -13,6 +12,18 @@ AllCops:
     - vendor/bundle/**/*
 
 Lint/ConstantResolution:
+  Enabled: false
+
+Style/DocumentationMethod:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
   Enabled: false
 
 Style/Copyright:

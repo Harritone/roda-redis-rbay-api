@@ -2,7 +2,6 @@
 
 class UserSerializer < ApplicationSerializer
   def to_json
-    binding.pry
     {
       user: user,
       tokens: @tokens
@@ -14,7 +13,7 @@ class UserSerializer < ApplicationSerializer
   def user
     {
       id: @user[:id],
-      username: @user[:username],
+      username: @user[:username]
     }
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Set RACK_ENV to test.
 ENV['RACK_ENV'] = 'test'
 

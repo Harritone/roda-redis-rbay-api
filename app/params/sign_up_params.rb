@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SignUpParams < ApplicationParams
   params do
     required(:username).filled(:string).value(format?: Constants::EMAIL_REGEX)

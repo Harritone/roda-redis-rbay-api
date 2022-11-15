@@ -6,6 +6,7 @@ module ApiHelpers
   def response
     last_response
   end
+
   # It parse the response JSON document into a Ruby data structure and return it.
   def json_response
     JSON.parse(response.body)

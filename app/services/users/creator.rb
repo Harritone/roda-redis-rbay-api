@@ -10,7 +10,7 @@ module Users
     end
 
     def call
-      raise Exceptions::UserExists if exists?
+      raise(Exceptions::UserExists) if exists?
 
       password_digest = BCrypt::Password.create(attributes[:password])
       params = {
@@ -44,7 +44,6 @@ module Users
       # Generate uniq token
       @token ||= AuthenticationTokenGenerator.call
     end
-
 
     def exists?
       redis_sismember(usernames_uniq_key, attributes[:username])
