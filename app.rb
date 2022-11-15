@@ -72,7 +72,7 @@ class App < Roda
         r.post('sign_up') do
           sign_up_params = SignUpParams.new.permit!(r.params)
           user           = Users::Creator.new(attributes: sign_up_params).call
-          tokens         = AuthorizationTokensGenerator.new(user: user).call
+          tokens         = AuthorizationTokensGenerator.new(user_id: user[:id]).call
 
           UserSerializer.new(user: user, tokens: tokens).render
         end
@@ -80,7 +80,7 @@ class App < Roda
         r.post('login') do
           login_params = LoginParams.new.permit!(r.params)
           user         = Users::Authenticator.new(login_params).call
-          tokens       = AuthorizationTokensGenerator.new(user: user).call
+          tokens       = AuthorizationTokensGenerator.new(user_id: user[:id]).call
 
           UserSerializer.new(user: user, tokens: tokens).render
         end
@@ -94,7 +94,7 @@ class App < Roda
         r.post('refresh_token') do
           Users::UpdateAuthenticationToken.new(user: current_user).call
 
-          tokens = AuthorizationTokensGenerator.new(user: current_user).call
+          tokens = AuthorizationTokensGenerator.new(user_id: current_user[:id]).call
 
           TokensSerializer.new(tokens: tokens).render
         end

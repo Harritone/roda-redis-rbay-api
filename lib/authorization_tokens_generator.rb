@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# {AuthorizationTokensGenerator} generates access and refresh token for {User}.
 class AuthorizationTokensGenerator
-  # @param [User] user for whom access and refresh token will be generated.
-  def initialize(user:)
-    @user = user
+  include Redisable
+
+  def initialize(user_id:)
+    @user_id = user_id
   end
 
   def call
@@ -14,13 +14,17 @@ class AuthorizationTokensGenerator
     }
   end
 
+  def user
+    (redis_hgetall(users_key(@user_id)) || {}).symbolize_keys.merge(id: @user_id)
+  end
+
   private
 
   def refresh_token
-    RefreshTokenGenerator.new(user: @user).call
+    RefreshTokenGenerator.new(user: user).call
   end
 
   def access_token
-    AccessTokenGenerator.new(user: @user).call
+    AccessTokenGenerator.new(user: user).call
   end
 end
