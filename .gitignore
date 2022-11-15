@@ -1,0 +1,5 @@
+.env.development
+.env.test
+/doc/*
+.yardoc/*
+.devcontainer
