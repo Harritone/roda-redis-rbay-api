@@ -23,7 +23,7 @@ module Redisable
       redis_pool.with { |conn| conn.sismember(key, value) }
     end
 
-    def redis_multi
+    def redis_multi(&block)
       redis_pool.with do |conn|
         conn.multi(&block)
       end
