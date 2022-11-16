@@ -4,6 +4,7 @@ module Redisable
   def self.included(klass)
     klass.include(InstanceMethods)
     klass.extend(ClassMethods)
+    klass.const_set('REDIS_POOL', ConnectionPool.new(size: 5) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) } )
   end
 
   module CommonMethods
@@ -33,6 +34,14 @@ module Redisable
 
     def redis_srem(key, value)
       redis_pool.with { |conn| conn.srem(key, value) }
+    end
+
+    def redis_eval(*args)
+      redis_pool.with { |conn| conn.eval(*args) }
+    end
+
+    def redis_lrange(key, start_index, end_index)
+      redis_pool.with { |conn| conn.lrange(key, start_index, end_index) }
     end
 
     def redis_multi(&block)
@@ -77,13 +86,25 @@ module Redisable
     def usernames_key
       'usernames'
     end
+
+    def items_views_key(id)
+      "items:views##{id}"
+    end
+
+    def bid_history_key(item_id)
+      "history##{item_id}"
+    end
+
+    def user_likes_key(user_id)
+      "users:likes##{user_id}"
+    end
   end
 
   module InstanceMethods
     include CommonMethods
 
     def redis_pool
-      ConnectionPool.new(size: 5) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) }
+      self.class::REDIS_POOL
     end
   end
 
@@ -91,7 +112,7 @@ module Redisable
     include CommonMethods
 
     def redis_pool
-      ConnectionPool.new(size: 5) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) }
+      self::REDIS_POOL
     end
   end
 end

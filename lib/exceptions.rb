@@ -14,5 +14,6 @@ module Exceptions
   class InvalidEmailOrPassword < StandardError; end
   class UserExists < StandardError; end
   class UserNotFound < StandardError; end
+  class NotFound < StandardError; end
   class PasswordMismatch < StandardError; end
 end

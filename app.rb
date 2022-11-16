@@ -48,6 +48,9 @@ class App < Roda
     elsif e.instance_of?(Exceptions::UserNotFound)
       error_object    = { error: I18n.t('user_not_found') }
       response.status = 404
+    elsif e.instance_of?(Exceptions::NotFound)
+      error_object    = { error: I18n.t('not_found') }
+      response.status = 401
     elsif e.instance_of?(Exceptions::PasswordMismatch)
       error_object    = { error: I18n.t('password_mismatch') }
       response.status = 401
@@ -106,6 +109,15 @@ class App < Roda
             item_params = Items::ItemParams.new.permit!(r.params)
             item_id     = Items::Creator.new(user: current_user, attributes: item_params).call
             { id: item_id }.to_json
+          end
+
+          r.on(:item_id) do |id|
+            r.get do
+              item = Items::GetItemQuery.new(id).call
+              Views::ItemViewIncrementor.new(item[:id],current_user[:id]).call
+
+              ItemSerializer.new(item: item, user_id: current_user[:id]).render
+            end
           end
         end
       end
