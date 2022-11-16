@@ -11,12 +11,15 @@ module Items
 
     def call
       ids = redis_zrevrangebyscore(items_by_ending_at_key, '+inf', Time.now.to_i, options: { limit: [@offset, @count] })
-      redis_multi do |pipeline|
-        res = []
-        ids.each do |item_id|
-          res << pipeline.hgetall(items_key(item_id))
+      result =
+        redis_multi do |pipeline|
+          ids.each do |item_id|
+            pipeline.hgetall(items_key(item_id))
+          end
         end
-        res
+
+      result.map.with_index do |item, i|
+        item.merge(id: ids[i]).symbolize_keys
       end
     end
   end

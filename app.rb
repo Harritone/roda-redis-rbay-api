@@ -72,7 +72,7 @@ class App < Roda
   route do |r|
     r.on('api') do
       r.on('v1') do
-        r.is 'start_info' do
+        r.is('start_info') do
           r.get do
             RootSerializer.new.render
           end
@@ -126,7 +126,7 @@ class App < Roda
               ItemSerializer.new(item: item, user_id: current_user[:id]).render
             end
 
-            r.is 'like' do
+            r.is('like') do
               r.post  do
                 Items::ItemLiker.new(item_id, current_user[:id]).call
                 item = Items::GetItemQuery.new(item_id).call
@@ -139,7 +139,6 @@ class App < Roda
                 ItemSerializer.new(item: item, user_id: current_user[:id]).render
               end
             end
-
           end
         end
 
