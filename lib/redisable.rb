@@ -24,6 +24,10 @@ module Redisable
       redis_pool.with { |conn| conn.sismember(key, value) }
     end
 
+    def redis_smembers(key)
+      redis_pool.with { |conn| conn.smembers(key) }
+    end
+
     def redis_zscore(key, value)
       redis_pool.with { |conn| conn.zscore(key, value) }
     end
@@ -46,6 +50,10 @@ module Redisable
 
     def redis_sinter(*args)
       redis_pool.with { |conn| conn.sinter(*args) }
+    end
+
+    def redis_hincrby(key, value, score)
+      redis_pool.with { |conn| conn.hincrby(key, value, score) }
     end
 
     def redis_multi(&block)

@@ -105,19 +105,36 @@ class App < Roda
         r.on('items') do
           current_user
 
-          r.post do
-            item_params = Items::ItemParams.new.permit!(r.params)
-            item_id     = Items::Creator.new(user: current_user, attributes: item_params).call
-            { id: item_id }.to_json
+          r.is do
+            r.post do
+              item_params = Items::ItemParams.new.permit!(r.params)
+              item_id     = Items::Creator.new(user: current_user, attributes: item_params).call
+              { id: item_id }.to_json
+            end
           end
 
-          r.on(:item_id) do |id|
+          r.on(:item_id) do |item_id|
             r.get do
-              item = Items::GetItemQuery.new(id).call
+              item = Items::GetItemQuery.new(item_id).call
               Views::ItemViewIncrementor.new(item[:id],current_user[:id]).call
 
               ItemSerializer.new(item: item, user_id: current_user[:id]).render
             end
+
+            r.is 'like' do
+              r.post  do
+                Items::ItemLiker.new(item_id, current_user[:id]).call
+                item = Items::GetItemQuery.new(item_id).call
+                ItemSerializer.new(item: item, user_id: current_user[:id]).render
+              end
+
+              r.delete do
+                Items::ItemUnliker.new(item_id, current_user[:id]).call
+                item = Items::GetItemQuery.new(item_id).call
+                ItemSerializer.new(item: item, user_id: current_user[:id]).render
+              end
+            end
+
           end
         end
 

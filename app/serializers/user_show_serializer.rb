@@ -5,7 +5,7 @@ class UserShowSerializer < ApplicationSerializer
     {
       username: @user[:username],
       shared_items: shared_items,
-      # liked: liked
+      liked: liked
     }
   end
 
@@ -16,6 +16,6 @@ class UserShowSerializer < ApplicationSerializer
   end
 
   def liked
-    Items::LikedItemsQuery.new(@user_id).call
+    Items::GetLikedItemsQuery.new(@user[:id]).call
   end
 end
