@@ -120,6 +120,17 @@ class App < Roda
             end
           end
         end
+
+        r.on('users') do
+          current_user
+
+          r.on(:user_id) do |id|
+            r.get do
+              user = Users::GetUserByIdQuery.new(id).call
+              UserShowSerializer.new(user: user, current_user_id: current_user[:id]).render
+            end
+          end
+        end
       end
     end
   end

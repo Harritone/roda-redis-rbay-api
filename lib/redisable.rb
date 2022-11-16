@@ -44,6 +44,10 @@ module Redisable
       redis_pool.with { |conn| conn.lrange(key, start_index, end_index) }
     end
 
+    def redis_sinter(*args)
+      redis_pool.with { |conn| conn.sinter(*args) }
+    end
+
     def redis_multi(&block)
       redis_pool.with do |conn|
         conn.multi(&block)

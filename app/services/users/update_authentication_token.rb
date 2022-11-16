@@ -3,6 +3,7 @@
 module Users
   class UpdateAuthenticationToken
     include Redisable
+
     def initialize(user:)
       @user = user
     end
