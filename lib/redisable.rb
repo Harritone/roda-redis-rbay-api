@@ -56,6 +56,18 @@ module Redisable
       redis_pool.with { |conn| conn.hincrby(key, value, score) }
     end
 
+    def redis_zrangebyscore(key, start, stop, options: {})
+      redis_pool.with { |conn| conn.zrangebyscore(key, start, stop, **options) }
+    end
+
+    def redis_zrevrangebyscore(key, start, stop, options: {})
+      redis_pool.with { |conn| conn.zrevrangebyscore(key, start, stop, **options) }
+    end
+
+    def redis_sort(...)
+      redis_pool.with { |conn| conn.sort(...) }
+    end
+
     def redis_multi(&block)
       redis_pool.with do |conn|
         conn.multi(&block)

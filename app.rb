@@ -72,6 +72,11 @@ class App < Roda
   route do |r|
     r.on('api') do
       r.on('v1') do
+        r.is 'start_info' do
+          r.get do
+            RootSerializer.new.render
+          end
+        end
         r.post('sign_up') do
           sign_up_params = SignUpParams.new.permit!(r.params)
           user           = Users::Creator.new(attributes: sign_up_params).call

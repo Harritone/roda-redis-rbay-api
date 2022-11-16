@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationSerializer
-  def initialize(object)
+  def initialize(object = {})
     object.each_pair do |key, value|
       instance_variable_set(:"@#{key}", value)
     end
