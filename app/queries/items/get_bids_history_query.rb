@@ -15,7 +15,13 @@ module Items
       end_index = -1 - @offset
 
       range = redis_lrange(bid_history_key(@item_id), start_index, end_index)
-      binding.pry
+      range.map do |bid|
+        amount, created_at = bid.split(':')
+        {
+          amount: Float(amount),
+          created_at: Integer(created_at)
+        }
+      end
     end
   end
 end
