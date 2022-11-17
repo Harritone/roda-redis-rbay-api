@@ -15,5 +15,6 @@ module Exceptions
   class UserExists < StandardError; end
   class UserNotFound < StandardError; end
   class NotFound < StandardError; end
+  class BidException < StandardError; end
   class PasswordMismatch < StandardError; end
 end

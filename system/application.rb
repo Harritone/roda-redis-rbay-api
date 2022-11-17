@@ -20,3 +20,5 @@ class Application < Dry::System::Container
     loader.setup
   end
 end
+
+Import = Application.injector

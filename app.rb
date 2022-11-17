@@ -54,6 +54,9 @@ class App < Roda
     elsif e.instance_of?(Exceptions::PasswordMismatch)
       error_object    = { error: I18n.t('password_mismatch') }
       response.status = 401
+    elsif e.instance_of?(Exceptions::BidException)
+      error_object    = { error: e.message }
+      response.status = 424
     elsif e.instance_of?(ActiveSupport::MessageVerifier::InvalidSignature)
       error_object    = { error: I18n.t('invalid_authorization_token') }
       response.status = 401
@@ -127,7 +130,7 @@ class App < Roda
             end
 
             r.is('like') do
-              r.post  do
+              r.post do
                 Items::ItemLiker.new(item_id, current_user[:id]).call
                 item = Items::GetItemQuery.new(item_id).call
                 ItemSerializer.new(item: item, user_id: current_user[:id]).render
@@ -137,6 +140,16 @@ class App < Roda
                 Items::ItemUnliker.new(item_id, current_user[:id]).call
                 item = Items::GetItemQuery.new(item_id).call
                 ItemSerializer.new(item: item, user_id: current_user[:id]).render
+              end
+            end
+
+            r.is('bid') do
+              r.post do
+                bid_params = Items::BidParams.new.permit!(r.params)
+                item = Items::GetItemQuery.new(item_id).call
+                Items::BidCreator.new.call(**bid_params, item: item, user_id: current_user[:id])
+                response.status = 201
+                response.write(nil)
               end
             end
           end

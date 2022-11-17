@@ -4,7 +4,8 @@ module Redisable
   def self.included(klass)
     klass.include(InstanceMethods)
     klass.extend(ClassMethods)
-    klass.const_set('REDIS_POOL', ConnectionPool.new(size: 5) { Redis.new(port: ENV['REDIS_PORT'], host: ENV['REDIS_HOST']) } )
+    # klass.include(Import['redis_pool'])
+    klass.const_set(:REDIS_POOL, Application[:redis_pool])
   end
 
   module CommonMethods
