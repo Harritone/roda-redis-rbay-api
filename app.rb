@@ -61,7 +61,6 @@ class App < Roda
       error_object    = { error: I18n.t('invalid_authorization_token') }
       response.status = 401
     else
-      binding.pry
       error_object = { error: I18n.t('something_went_wrong') }
       response.status = 500
     end
@@ -111,6 +110,14 @@ class App < Roda
         end
 
         r.on('items') do
+          r.is('search') do
+            r.get do
+              search_params = Items::SearchParams.new.permit!(r.params)
+              items = Items::ItemsSearcher.new.call(**search_params)
+              items.to_json
+            end
+          end
+
           current_user
 
           r.is do

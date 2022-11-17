@@ -54,9 +54,11 @@ gem 'i18n'
 # Rack middleware for blocking & throttling.
 gem 'rack-attack'
 
-gem 'byebug'
 # Redis is an in-memory database that persists on disk.
 gem 'redis'
+
+# redis search functionality
+gem 'redisearch-rb'
 
 # ruby distributed lock using redis
 gem 'redlock'
