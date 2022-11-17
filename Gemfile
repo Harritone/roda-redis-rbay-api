@@ -12,17 +12,9 @@ gem 'puma', '~> 5.5'
 
 # A make-like build utility for Ruby.
 gem 'rake'
-# Sequel: The Database Toolkit for Ruby.
-# gem 'sequel', '>= 5.41'
-
-# Faster SELECTs when using Sequel with pg.
-# gem 'sequel_pg', '>= 1.14'
 
 # A runtime developer console and IRB alternative with powerful introspection capabilities.
 gem 'pry'
-
-# YARD is a Ruby Documentation tool. The Y stands for "Yay!"
-# gem 'yard'
 
 # A fast JSON parser and Object marshaller as a Ruby gem.
 gem 'oj'
@@ -45,9 +37,6 @@ gem 'activesupport'
 # Plugin that adds BCrypt authentication and password hashing to Sequel models.
 gem 'sequel_secure_password'
 
-# A gem providing "time travel" and "time freezing" capabilities, making it dead simple to test time-dependent code. It provides a unified method to mock Time.now, Date.today, and DateTime.now in a single call.
-# gem 'timecop'
-
 # Ruby internationalization and localization (i18n) solution.
 gem 'i18n'
 
@@ -65,9 +54,6 @@ gem 'redlock'
 
 # Handle connection
 gem 'connection_pool'
-
-# Simple, efficient background processing for Ruby.
-# gem 'sidekiq'
 
 # Efficient and thread-safe code loader for Ruby.
 gem 'zeitwerk'
@@ -90,9 +76,6 @@ group :development, :test do
 
   # Thread-safety analysis for your projects.
   gem 'rubocop-thread_safety'
-
-  # Code style checking for Sequel.
-  # gem 'rubocop-sequel'
 
   # A RuboCop plugin for Rake
   gem 'rubocop-rake'
